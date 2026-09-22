@@ -40,7 +40,7 @@ struct VehiclesView: View {
                     }.navigationTitle("Prywatność")
                 } label: { Label("Prywatność i dane", systemImage: "lock.shield") }
             }
-            Section { Text("DriveLog 0.5.4 • wersja testowa").font(.caption).foregroundStyle(.secondary) }
+            Section { Text("DriveLog 0.5.5 • wersja testowa").font(.caption).foregroundStyle(.secondary) }
         }.navigationTitle("Więcej")
             .toolbar { Button { showingAdd = true } label: { Image(systemName: "plus") } }
             .sheet(isPresented: $showingAdd) { NavigationStack { VehicleEditor() } }

@@ -43,7 +43,7 @@ struct DashboardView: View {
                 quickActions
                 Text("Saldo to przychody po prowizji minus zapisane wydatki. Nie uwzględnia podatków ani amortyzacji. Paliwo jest kosztem w dniu zakupu, a nie zużycia. Kilometry i czas dotyczą tras oznaczonych jako służbowe.")
                     .font(.footnote).foregroundStyle(.secondary)
-                Text("DriveLog 0.5.4").font(.caption2).foregroundStyle(.secondary).accessibilityIdentifier("dashboard.bottom")
+                Text("DriveLog 0.5.5").font(.caption2).foregroundStyle(.secondary).accessibilityIdentifier("dashboard.bottom")
             }.padding(.horizontal, 18).padding(.bottom, 96)
         }
         .scrollIndicators(.visible)

@@ -1,4 +1,4 @@
-# DriveLog 0.5.4 — wersja testowa
+# DriveLog 0.5.5 — wersja testowa
 
 Natywny dziennik iOS: pojazdy, trasy, zmiany i saldo przychodów oraz wydatków.
 
@@ -32,6 +32,7 @@ komendy XcodeGen bezpośrednio. Projekt .xcodeproj powstaje lokalnie na Macu.
 - Roboczy zapis aktywnej trasy oraz odzyskiwanie po ponownym uruchomieniu.
 - Bezpieczny ekran błędu bazy bez automatycznego tworzenia pustych danych.
 - Pełne obszary dotykowe przycisków zmiany i jednoznaczna obsługa zgody GPS.
+- Utrzymywanie sesji GPS po wygaszeniu ekranu oraz widoczna liczba punktów.
 
 ## Ważne
 

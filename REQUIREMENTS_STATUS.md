@@ -1,4 +1,4 @@
-# DriveLog — stan 0.5.4
+# DriveLog — stan 0.5.5
 
 ## Zaimplementowane w kodzie, wymagające odbioru w Xcode
 

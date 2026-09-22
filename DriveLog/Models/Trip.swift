@@ -3,6 +3,7 @@ import SwiftData
 
 enum TripCategory: String, Codable, CaseIterable, Identifiable {
     case business = "Służbowa", privateTrip = "Prywatna", unclassified = "Nierozpoznana"
+    static let gpsDefault: TripCategory = .business
     var id: String { rawValue }
 }
 

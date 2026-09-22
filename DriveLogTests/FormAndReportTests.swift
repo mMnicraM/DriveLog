@@ -3,6 +3,10 @@ import SwiftData
 @testable import DriveLog
 
 final class FormAndReportTests: XCTestCase {
+    func testGPSRoutesDefaultToBusinessCategory() {
+        XCTAssertEqual(TripCategory.gpsDefault, .business)
+    }
+
     func testLocationAuthorizationProducesVisibleAction() {
         XCTAssertEqual(LocationAuthorizationAction.resolve(.authorizedWhenInUse), .start)
         XCTAssertEqual(LocationAuthorizationAction.resolve(.authorizedAlways), .start)

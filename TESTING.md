@@ -1,4 +1,4 @@
-# DriveLog 0.5.4 — odbiór na Macu
+# DriveLog 0.5.5 — odbiór na Macu
 
 ## Status
 
@@ -23,15 +23,15 @@ Zmiana przewijania jest kandydatem do poprawki, a nie potwierdzoną naprawą.
 1. W katalogu zawierającym project.yml wykonaj: `xcodegen generate`.
 2. Otwórz DriveLog.xcodeproj i wybierz schemat DriveLog oraz symulator iPhone.
 3. Uruchom Product → Build, następnie Product → Test (⌘U).
-4. W zestawie jest łącznie 11 testów: obliczenia, liczby, granice okresów,
+4. W zestawie jest łącznie 12 testów: obliczenia, liczby, granice okresów,
    filtrowanie aut, klasyfikacja tras, pusty wynik, zapis powiązania, kopia GPS
-   i reakcje na każdy stan zgody lokalizacji.
+   reakcje na każdy stan zgody lokalizacji i domyślną kategorię trasy GPS.
 5. Uruchom aplikację przez ⌘R. Sprawdź poniższą listę również na iPhonie.
 
 ## Scenariusze ręczne — wymagane przed uznaniem wersji za gotową
 
 - Start: przeciągnij ekran w górę od karty salda i od pustego miejsca.
-  Dotrzyj do stopki „DriveLog 0.5.4”, wróć na górę, otwórz każdą szybką akcję.
+  Dotrzyj do stopki „DriveLog 0.5.5”, wróć na górę, otwórz każdą szybką akcję.
   Powtórz z małym ekranem i dużym tekstem systemowym. Identyfikatory do
   przyszłych UI tests: dashboard.scroll i dashboard.bottom.
 - Formularze: etykiety mają pozostać widoczne po wpisaniu danych.
@@ -59,6 +59,11 @@ Zmiana przewijania jest kandydatem do poprawki, a nie potwierdzoną naprawą.
 - GPS i zgody: przy pierwszym użyciu wybierz zgodę i sprawdź, że rejestracja
   zaczyna się bez drugiego kliknięcia. Po odmowie przycisk ma prowadzić do
   Ustawień, a po powrocie prawidłowo rozpoznać nową zgodę.
+- GPS w tle: zaczekaj na co najmniej dwa zapisane punkty, zablokuj ekran na
+  2–3 minuty i przejdź kilkaset metrów. Po odblokowaniu liczba punktów i dystans
+  mają być większe, a szczegóły trasy mają pokazać ślad na mapie.
+- Nowa trasa GPS ma kategorię „Służbowa”. Trasa bez żadnego punktu nie może
+  zapisać się automatycznie; ekran ma pozwolić ją odrzucić.
 - Po instalacji sprawdź, czy ekran GPS nie pokazuje pomarańczowego ostrzeżenia
   o pracy tylko w pierwszym planie. Jeśli je pokazuje, trasa nie powinna
   zamknąć aplikacji, ale test z wygaszonym ekranem nie jest jeszcze zaliczony.

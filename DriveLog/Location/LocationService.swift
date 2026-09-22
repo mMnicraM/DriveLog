@@ -76,12 +76,14 @@ private enum RecordingDraftStore {
     @Published private(set) var points: [TrackPoint] = []
     @Published private(set) var recoverableDraft: RecordingSnapshot?
     @Published private(set) var persistenceError: String?
+    @Published private(set) var locationError: String?
     let backgroundTrackingAvailable = LocationConfiguration.supportsBackgroundLocation()
 
     private let manager = CLLocationManager()
     private var previous: CLLocation?
     private var activeSnapshot: RecordingSnapshot?
     private var lastPersistedAt = Date.distantPast
+    private var backgroundActivitySession: CLBackgroundActivitySession?
 
     override init() {
         super.init()
@@ -116,6 +118,7 @@ private enum RecordingDraftStore {
         points = []
         distanceMeters = 0
         previous = nil
+        locationError = nil
         isRecording = true
         persist(snapshot)
         startManager()
@@ -138,6 +141,7 @@ private enum RecordingDraftStore {
                 timestamp: last.timestamp
             )
         }
+        locationError = nil
         isRecording = true
         startManager()
     }
@@ -173,6 +177,7 @@ private enum RecordingDraftStore {
         distanceMeters = 0
         previous = nil
         persistenceError = nil
+        locationError = nil
         RecordingDraftStore.remove()
     }
 
@@ -196,11 +201,18 @@ private enum RecordingDraftStore {
         manager.allowsBackgroundLocationUpdates = backgroundTrackingAvailable
         manager.showsBackgroundLocationIndicator = backgroundTrackingAvailable
         manager.pausesLocationUpdatesAutomatically = false
+        if backgroundTrackingAvailable {
+            // iOS 17+: keep a When-In-Use authorized app visibly active while
+            // the screen is locked or the app is in the background.
+            backgroundActivitySession = CLBackgroundActivitySession()
+        }
         manager.startUpdatingLocation()
     }
 
     private func stopManager() {
         manager.stopUpdatingLocation()
+        backgroundActivitySession?.invalidate()
+        backgroundActivitySession = nil
         manager.allowsBackgroundLocationUpdates = false
         manager.showsBackgroundLocationIndicator = false
         isRecording = false
@@ -219,18 +231,35 @@ private enum RecordingDraftStore {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         authorizationStatus = manager.authorizationStatus
         if authorizationStatus == .denied || authorizationStatus == .restricted, isRecording {
+            locationError = "Dostęp do lokalizacji został wyłączony. Rejestrowanie zatrzymano; możesz odrzucić pustą trasę albo zachować odebrane wcześniej punkty."
             _ = stop()
         }
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        persistenceError = error.localizedDescription
+        let coreLocationError = error as? CLError
+        if coreLocationError?.code == .locationUnknown {
+            // Temporary lack of a position is expected, for example indoors.
+            // Core Location keeps trying and no user-facing error is needed.
+            return
+        }
+
+        if coreLocationError?.code == .denied {
+            authorizationStatus = manager.authorizationStatus
+            locationError = authorizationStatus == .denied || authorizationStatus == .restricted
+                ? "Dostęp do lokalizacji został wyłączony. Włącz go w Ustawieniach iPhone’a dla DriveLog."
+                : "iOS przerwał dostęp do GPS. Zakończono rejestrowanie, aby nie zapisać pustej trasy. Sprawdź uprawnienia lokalizacji i spróbuj ponownie."
+            if isRecording { _ = stop() }
+            return
+        }
+
+        locationError = "Nie udało się odczytać lokalizacji: \(error.localizedDescription)"
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard isRecording, var snapshot = activeSnapshot else { return }
         var changed = false
-        for location in locations where location.horizontalAccuracy >= 0 && location.horizontalAccuracy <= 50 {
+        for location in locations where location.horizontalAccuracy >= 0 && location.horizontalAccuracy <= 100 {
             guard location.timestamp >= snapshot.startedAt,
                   previous == nil || location.timestamp > previous!.timestamp else { continue }
             if let previous {

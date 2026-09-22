@@ -1,5 +1,23 @@
 # Historia zmian
 
+## 0.5.5 — GPS po wygaszeniu ekranu
+
+- Dodano `CLBackgroundActivitySession`, która utrzymuje sesję lokalizacji po
+  zablokowaniu ekranu przy zgodzie „Gdy używam aplikacji”.
+- Sesja pracy w tle jest przechowywana przez cały czas rejestracji i jawnie
+  kończona wraz z trasą.
+- Błędy Core Location nie są już pokazywane jako błędy zapisu kopii roboczej.
+- Tymczasowy brak pozycji jest ignorowany, a odebranie dostępu do GPS kończy
+  rejestrację z czytelnym komunikatem.
+- Ekran pokazuje liczbę zapisanych punktów GPS oraz stan pracy w tle.
+- Zwiększono dopuszczalną dokładność punktu do 100 m, aby nie odrzucać całego
+  śladu przy słabszym sygnale.
+- Trasa GPS jest domyślnie zapisywana jako służbowa.
+- Pusta trasa nie zapisuje się automatycznie; użytkownik może ją odrzucić albo
+  świadomie zachować bez mapy.
+- Mapa pokazuje także pojedynczy odebrany punkt GPS.
+- Podniesiono numer kompilacji do 12.
+
 ## 0.5.4 — przyciski zmiany i GPS
 
 - Cała widoczna powierzchnia przycisku rozpoczęcia/zakończenia zmiany reaguje

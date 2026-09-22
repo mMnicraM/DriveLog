@@ -60,6 +60,13 @@ struct RecordingView: View {
                     .font(.title2.bold())
                 Text(Formatters.distance(location.distanceMeters / 1000))
                     .font(.largeTitle.bold().monospacedDigit())
+                if location.isRecording {
+                    Text(location.points.isEmpty
+                         ? "Oczekiwanie na pierwszy punkt GPS…"
+                         : "Zapisano punktów GPS: \(location.points.count)")
+                        .font(.caption.monospacedDigit())
+                        .foregroundStyle(.secondary)
+                }
                 if !location.isRecording && pending == nil {
                     Picker("Pojazd", selection: $vehicleID) {
                         Text("Wybierz pojazd").tag(nil as UUID?)
@@ -77,11 +84,23 @@ struct RecordingView: View {
                         .font(.footnote)
                         .foregroundStyle(.orange)
                 }
+                if location.isRecording && location.backgroundTrackingAvailable {
+                    Label("Rejestrowanie po wygaszeniu ekranu jest aktywne", systemImage: "lock.open.fill")
+                        .font(.footnote)
+                        .foregroundStyle(Brand.green)
+                }
                 Button(primaryActionTitle) {
                     toggle()
                 }
                 .buttonStyle(PrimaryButtonStyle())
                 .disabled(pending == nil && !location.isRecording && vehicleID == nil)
+                if pending != nil {
+                    Button("Odrzuć tę trasę", role: .destructive) {
+                        pending = nil
+                        location.discardDraft()
+                    }
+                    .frame(maxWidth: .infinity)
+                }
                 Text("Trasa jest zapisywana roboczo na urządzeniu. Po przerwaniu aplikacja pozwoli ją kontynuować, zapisać lub odrzucić. Dokładność i działanie w tle sprawdź na prawdziwym iPhonie.")
                     .font(.footnote).foregroundStyle(.secondary)
             }.padding()
@@ -92,6 +111,11 @@ struct RecordingView: View {
         .onAppear(perform: prepare)
         .onChange(of: location.persistenceError) { _, value in
             if let value { error = "Nie udało się zapisać kopii roboczej: \(value)" }
+        }
+        .onChange(of: location.locationError) { _, value in
+            guard let value else { return }
+            if !location.isRecording { pending = location.recoverableDraft }
+            error = value
         }
         .onChange(of: location.authorizationStatus) { _, status in
             guard startAfterPermission else { return }
@@ -143,7 +167,9 @@ struct RecordingView: View {
     }
 
     private var primaryActionTitle: String {
-        if pending != nil { return "Zapisz odzyskaną trasę" }
+        if let pending {
+            return pending.points.isEmpty ? "Zapisz trasę bez śladu GPS" : "Zapisz odzyskaną trasę"
+        }
         if location.isRecording { return "Zakończ i zapisz trasę" }
         switch LocationAuthorizationAction.resolve(location.authorizationStatus) {
         case .start: return "Rozpocznij trasę"
@@ -168,13 +194,19 @@ struct RecordingView: View {
     }
 
     private func toggle() {
-        if pending == nil && location.isRecording { pending = location.stop() }
+        let justStopped = pending == nil && location.isRecording
+        if justStopped { pending = location.stop() }
         if let snapshot = pending {
+            if justStopped && snapshot.points.isEmpty {
+                error = "Nie odebrano żadnego punktu GPS. Sprawdź dostęp do lokalizacji i wyjdź z budynku. Możesz odrzucić kopię albo świadomie zapisać trasę bez mapy."
+                return
+            }
             let trip = Trip(
                 startedAt: snapshot.startedAt,
                 endedAt: snapshot.endedAt ?? .now,
                 distanceMeters: snapshot.distanceMeters,
                 vehicleID: snapshot.vehicleID,
+                category: .gpsDefault,
                 points: snapshot.points
             )
             trip.shiftID = snapshot.shiftID
@@ -184,7 +216,7 @@ struct RecordingView: View {
                 activeVehicleID = snapshot.vehicleID.uuidString
                 pending = nil
                 location.completeDraft()
-                notice = "Zapisano trasę — wybierz jej kategorię w Trasach"
+                notice = "Zapisano trasę jako służbową"
                 dismiss()
             } catch {
                 context.rollback()
@@ -237,12 +269,14 @@ private struct TripDetailView: View {
     }
     var body: some View {
         Form {
-            if coordinates.count > 1 {
+            if !coordinates.isEmpty {
                 Section("Ślad GPS") {
                     Map(initialPosition: .region(region)) {
-                        MapPolyline(coordinates: coordinates).stroke(Brand.green, lineWidth: 5)
+                        if coordinates.count > 1 {
+                            MapPolyline(coordinates: coordinates).stroke(Brand.green, lineWidth: 5)
+                        }
                         if let start = coordinates.first { Marker("Start", systemImage: "flag.fill", coordinate: start).tint(Brand.green) }
-                        if let end = coordinates.last { Marker("Koniec", systemImage: "flag.checkered", coordinate: end).tint(.red) }
+                        if coordinates.count > 1, let end = coordinates.last { Marker("Koniec", systemImage: "flag.checkered", coordinate: end).tint(.red) }
                     }.frame(height: 250).clipShape(RoundedRectangle(cornerRadius: 14))
                 }
             } else {
