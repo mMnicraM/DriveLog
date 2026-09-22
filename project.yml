@@ -28,8 +28,8 @@ targets:
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
         CODE_SIGN_STYLE: Automatic
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-        MARKETING_VERSION: 0.5.5
-        CURRENT_PROJECT_VERSION: 12
+        MARKETING_VERSION: 0.6.0
+        CURRENT_PROJECT_VERSION: 13
   DriveLogTests:
     type: bundle.unit-test
     platform: iOS

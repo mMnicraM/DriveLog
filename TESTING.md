@@ -1,4 +1,4 @@
-# DriveLog 0.5.5 — odbiór na Macu
+# DriveLog 0.6.0 — odbiór na Macu
 
 ## Status
 
@@ -12,10 +12,13 @@ Zmiana przewijania jest kandydatem do poprawki, a nie potwierdzoną naprawą.
 - Nie usuwaj poprzedniej aplikacji ani jej bazy w celu aktualizacji.
 - Zachowaj poprzedni projekt i kopię urządzenia; ważnych danych nie trzymaj
   wyłącznie w tej testowej aplikacji.
-- Najpierw sprawdź aktualizację na kopii środowiska testowego z danymi 0.4.1.
+- Najpierw sprawdź aktualizację z zainstalowanej wersji 0.5.5, bez usuwania
+  aplikacji. Pozwoli to potwierdzić migrację na prawdziwej kopii danych.
 - Pozostaw ten sam identyfikator aplikacji i podpis. Doszły opcjonalne pola:
-  powiązanie ze zmianą, auto przychodu i jednostka zakupu. Migracja istniejącej
-  bazy wymaga osobnego sprawdzenia — test w pamięci jej nie potwierdza.
+  stan rozliczenia trasy oraz identyfikator trasy przy przychodzie. Istniejące
+  trasy pozostają wpisami starszego typu i nie są automatycznie oznaczane jako
+  zaległe. Migracja istniejącej bazy wymaga osobnego sprawdzenia — test w pamięci
+  jej nie potwierdza.
 - Jeśli pojawi się błąd otwarcia bazy, zachowaj log; nie kasuj danych.
 
 ## Kompilacja i testy
@@ -23,15 +26,16 @@ Zmiana przewijania jest kandydatem do poprawki, a nie potwierdzoną naprawą.
 1. W katalogu zawierającym project.yml wykonaj: `xcodegen generate`.
 2. Otwórz DriveLog.xcodeproj i wybierz schemat DriveLog oraz symulator iPhone.
 3. Uruchom Product → Build, następnie Product → Test (⌘U).
-4. W zestawie jest łącznie 12 testów: obliczenia, liczby, granice okresów,
-   filtrowanie aut, klasyfikacja tras, pusty wynik, zapis powiązania, kopia GPS
-   reakcje na każdy stan zgody lokalizacji i domyślną kategorię trasy GPS.
+4. W zestawie jest łącznie 15 testów: obliczenia, liczby, granice okresów,
+   filtrowanie aut, klasyfikacja tras, pusty wynik, zapis powiązania, kopia GPS,
+   reakcje na każdy stan zgody lokalizacji, domyślną kategorię trasy GPS,
+   prowizje platform oraz powiązanie rozliczenia z trasą.
 5. Uruchom aplikację przez ⌘R. Sprawdź poniższą listę również na iPhonie.
 
 ## Scenariusze ręczne — wymagane przed uznaniem wersji za gotową
 
 - Start: przeciągnij ekran w górę od karty salda i od pustego miejsca.
-  Dotrzyj do stopki „DriveLog 0.5.5”, wróć na górę, otwórz każdą szybką akcję.
+  Dotrzyj do stopki „DriveLog 0.6.0”, wróć na górę, otwórz każdą szybką akcję.
   Powtórz z małym ekranem i dużym tekstem systemowym. Identyfikatory do
   przyszłych UI tests: dashboard.scroll i dashboard.bottom.
 - Formularze: etykiety mają pozostać widoczne po wpisaniu danych.
@@ -64,6 +68,15 @@ Zmiana przewijania jest kandydatem do poprawki, a nie potwierdzoną naprawą.
   mają być większe, a szczegóły trasy mają pokazać ślad na mapie.
 - Nowa trasa GPS ma kategorię „Służbowa”. Trasa bez żadnego punktu nie może
   zapisać się automatycznie; ekran ma pozwolić ją odrzucić.
+- Rozliczenie trasy: zakończ trasę i sprawdź, że formularz pokazuje właściwe
+  auto, datę końca, dystans i czas bez dodatkowego wybierania. Zapisz kwotę,
+  napiwek i prowizję; przychód ma pojawić się w Historii oraz saldzie.
+- Wykonaj osobno „Przejazd prywatny” oraz „Uzupełnię później”. Drugi wariant ma
+  pojawić się na ekranie Start i w Trasach jako „Do rozliczenia”.
+- Ustaw prowizję platformy w Więcej → Platformy i prowizje, zmień aktywną
+  platformę na ekranie Start i sprawdź automatyczne podstawienie obu wartości.
+- Usuń przychód powiązany z trasą. Trasa ma ponownie otrzymać stan
+  „Do rozliczenia”, bez usuwania śladu GPS.
 - Po instalacji sprawdź, czy ekran GPS nie pokazuje pomarańczowego ostrzeżenia
   o pracy tylko w pierwszym planie. Jeśli je pokazuje, trasa nie powinna
   zamknąć aplikacji, ale test z wygaszonym ekranem nie jest jeszcze zaliczony.

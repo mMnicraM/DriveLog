@@ -33,6 +33,7 @@ struct FinanceEditor: View {
     @Query(sort: \Vehicle.createdAt) private var vehicles: [Vehicle]
     @Query(sort: \WorkShift.startedAt, order: .reverse) private var shifts: [WorkShift]
     @AppStorage("activeVehicleID") private var activeVehicleID = ""
+    @AppStorage("activeIncomePlatform") private var activePlatform = IncomePlatform.uber.rawValue
     @AppStorage("saveNotice") private var notice = ""
     @State private var vehicleID: UUID?
     @State private var shiftID: UUID?
@@ -51,6 +52,7 @@ struct FinanceEditor: View {
     @State private var loaded = false
     @State private var error = ""
     private var editing: Bool { income != nil || fuel != nil || expense != nil }
+    private var linkedToTrip: Bool { income?.tripID != nil }
     private var vehicle: Vehicle? { vehicles.first { $0.id == vehicleID } }
     private var electric: Bool {
         if let fuel, fuel.vehicleID == vehicleID, let unit = fuel.quantityUnit { return unit == "kWh" }
@@ -84,13 +86,20 @@ struct FinanceEditor: View {
                     Text(kind == .income ? "Bez przypisania" : "Wybierz pojazd").tag(nil as UUID?)
                     ForEach(vehicles) { Text($0.displayName).tag(Optional($0.id)) }
                 }
+                .disabled(linkedToTrip)
                 DatePicker("Data i godzina", selection: $date, in: ...Date.now)
+                    .disabled(linkedToTrip)
                 Picker("Zmiana", selection: $shiftID) {
                     Text("Poza zmianą").tag(nil as UUID?)
                     ForEach(compatibleShifts) { shift in
                         Text(shift.startedAt.formatted(date: .abbreviated, time: .shortened))
                             .tag(Optional(shift.id))
                     }
+                }
+                .disabled(linkedToTrip)
+                if linkedToTrip {
+                    Text("Pojazd, data i zmiana wynikają z powiązanej trasy. Możesz poprawić kwoty, platformę i notatkę.")
+                        .font(.footnote).foregroundStyle(.secondary)
                 }
             }
             if kind == .income {
@@ -155,6 +164,7 @@ struct FinanceEditor: View {
             vehicleID = vehicles.first(where: { $0.id.uuidString == activeVehicleID })?.id ?? vehicles.first?.id
             shiftID = compatibleShifts.first(where: { $0.isActive })?.id
             odometer = vehicle.map { EntryNumber.text($0.odometer) } ?? ""
+            if kind == .income { platform = IncomePlatform(rawValue: activePlatform)?.rawValue ?? IncomePlatform.uber.rawValue }
         }
     }
     private func save() {
@@ -166,6 +176,7 @@ struct FinanceEditor: View {
             item.vehicleID = vehicleID; item.shiftID = shiftID; item.date = date
             item.amount = EntryNumber.parse(amount)!; item.tips = EntryNumber.parse(tips)!
             item.commission = EntryNumber.parse(commission)!; item.platform = platform; item.note = details
+            activePlatform = platform
         case .fuel:
             guard let vehicleID else { return }
             let item = fuel ?? FuelEntry(vehicleID: vehicleID, odometer: 0, liters: 0, pricePerUnit: 0)
@@ -225,6 +236,11 @@ struct ManualTripForm: View {
                     guard let vehicleID, let distance = EntryNumber.parse(km), valid else { return }
                     let trip = Trip(startedAt: started, endedAt: ended, distanceMeters: distance * 1000, vehicleID: vehicleID, category: category, purpose: purpose)
                     trip.shiftID = shifts.first { $0.vehicleID == vehicleID && started >= $0.startedAt && ended <= ($0.endedAt ?? .now) }?.id
+                    switch category {
+                    case .business: trip.settlementState = .pending
+                    case .privateTrip: trip.settlementState = .noIncome
+                    case .unclassified: trip.settlementState = nil
+                    }
                     context.insert(trip)
                     do { try context.save(); notice = "Zapisano trasę"; dismiss() }
                     catch { context.rollback(); self.error = error.localizedDescription }

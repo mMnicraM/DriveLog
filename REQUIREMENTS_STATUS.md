@@ -1,4 +1,4 @@
-# DriveLog — stan 0.5.5
+# DriveLog — stan 0.6.0
 
 ## Zaimplementowane w kodzie, wymagające odbioru w Xcode
 
@@ -12,6 +12,8 @@
 - Potwierdzenie usuwania, obsługa błędów zapisu, robocze wartości przy edycji.
 - Kopia robocza aktywnej trasy i ekran odzyskiwania po ponownym uruchomieniu.
 - Bezpieczne zatrzymanie na ekranie diagnostycznym, jeśli baza się nie otworzy.
+- Szybkie rozliczenie kursu powiązane z trasą, autem i zmianą.
+- Aktywna platforma, własne stawki prowizji i kolejka nierozliczonych tras.
 
 ## Niepotwierdzone
 
@@ -19,6 +21,7 @@
 - Skuteczność naprawy przewijania na symulatorze i urządzeniu.
 - Migracja z poprzedniej bazy i trwałość danych po aktualizacji.
 - Zachowanie GPS w tle, uprawnienia, dokładność rzeczywistej trasy.
+- Migracja opcjonalnych pól rozliczenia na bazie utworzonej przez 0.5.5.
 - Dostępność przy dużym tekście i VoiceOver.
 
 ## Następne priorytety

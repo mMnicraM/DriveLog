@@ -6,17 +6,37 @@ import Combine
 
 struct TripsView: View {
     @Query(sort: \Trip.startedAt, order: .reverse) private var trips: [Trip]
+    @Query private var incomes: [Income]
     @Environment(\.modelContext) private var context
     @State private var deleting: [Trip] = []
     @State private var showDelete = false
     @State private var error = ""
     var body: some View {
         List { if trips.isEmpty { ContentUnavailableView("Brak tras", systemImage: "map", description: Text("Rozpocznij pierwszą trasę z ekranu Start.")) }
-            ForEach(trips) { trip in NavigationLink { TripDetailView(trip: trip) } label: { VStack(alignment: .leading, spacing: 6) { HStack { Text(trip.startedAt, format: .dateTime.day().month().hour().minute()).font(.headline); Spacer(); Text(trip.category.rawValue).font(.caption).foregroundStyle(trip.category == .business ? .green : .secondary) }; HStack { Label(Formatters.distance(trip.distanceKM), systemImage: "road.lanes"); Label(Formatters.duration(trip.duration), systemImage: "clock") }.font(.subheadline).foregroundStyle(.secondary) } } }.onDelete { deleting = $0.map { trips[$0] }; showDelete = true }
+            ForEach(trips) { trip in
+                NavigationLink { TripDetailView(trip: trip) } label: {
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack {
+                            Text(trip.startedAt, format: .dateTime.day().month().hour().minute()).font(.headline)
+                            Spacer()
+                            Text(trip.settlementState == .pending ? "Do rozliczenia" : trip.category.rawValue)
+                                .font(.caption)
+                                .foregroundStyle(trip.settlementState == .pending ? .orange : (trip.category == .business ? .green : .secondary))
+                        }
+                        HStack {
+                            Label(Formatters.distance(trip.distanceKM), systemImage: "road.lanes")
+                            Label(Formatters.duration(trip.duration), systemImage: "clock")
+                        }.font(.subheadline).foregroundStyle(.secondary)
+                    }
+                }
+            }.onDelete { deleting = $0.map { trips[$0] }; showDelete = true }
         }.navigationTitle("Trasy")
         .confirmationDialog("Usunąć wybrane trasy? Tej operacji nie można cofnąć.", isPresented: $showDelete, titleVisibility: .visible) {
             Button("Usuń", role: .destructive) {
-                deleting.forEach { context.delete($0) }
+                deleting.forEach { trip in
+                    incomes.filter { $0.tripID == trip.id }.forEach { $0.tripID = nil }
+                    context.delete(trip)
+                }
                 do { try context.save(); deleting = [] }
                 catch { context.rollback(); self.error = error.localizedDescription }
             }
@@ -41,6 +61,8 @@ struct RecordingView: View {
     @State private var showRecovery = false
     @State private var showLocationSettings = false
     @State private var startAfterPermission = false
+    @State private var settlementTrip: Trip?
+    @State private var dismissAfterSettlement = false
     @AppStorage("activeVehicleID") private var activeVehicleID = ""
     @AppStorage("saveNotice") private var notice = ""
 
@@ -108,6 +130,19 @@ struct RecordingView: View {
         .navigationTitle("Rejestracja GPS")
         .navigationBarBackButtonHidden(location.isRecording || pending != nil)
         .interactiveDismissDisabled(location.isRecording || pending != nil)
+        .sheet(item: $settlementTrip, onDismiss: {
+            if dismissAfterSettlement {
+                dismissAfterSettlement = false
+                dismiss()
+            }
+        }) { trip in
+            NavigationStack {
+                TripSettlementView(trip: trip) {
+                    dismissAfterSettlement = true
+                    settlementTrip = nil
+                }
+            }
+        }
         .onAppear(perform: prepare)
         .onChange(of: location.persistenceError) { _, value in
             if let value { error = "Nie udało się zapisać kopii roboczej: \(value)" }
@@ -210,14 +245,14 @@ struct RecordingView: View {
                 points: snapshot.points
             )
             trip.shiftID = snapshot.shiftID
+            trip.settlementState = .pending
             context.insert(trip)
             do {
                 try context.save()
                 activeVehicleID = snapshot.vehicleID.uuidString
                 pending = nil
                 location.completeDraft()
-                notice = "Zapisano trasę jako służbową"
-                dismiss()
+                settlementTrip = trip
             } catch {
                 context.rollback()
                 self.error = error.localizedDescription
@@ -254,12 +289,14 @@ private struct TripDetailView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     @AppStorage("saveNotice") private var notice = ""
+    @Query private var incomes: [Income]
     @State private var category: TripCategory = .unclassified
     @State private var purpose = ""
     @State private var note = ""
     @State private var loaded = false
     @State private var error = ""
     private var coordinates: [CLLocationCoordinate2D] { trip.points.map { .init(latitude: $0.latitude, longitude: $0.longitude) } }
+    private var linkedIncome: Income? { incomes.first { $0.tripID == trip.id } }
     private var region: MKCoordinateRegion {
         guard let first = coordinates.first else { return .init(center: .init(latitude: 52.0, longitude: 19.0), span: .init(latitudeDelta: 5, longitudeDelta: 5)) }
         let latitudes = coordinates.map(\.latitude), longitudes = coordinates.map(\.longitude)
@@ -289,9 +326,31 @@ private struct TripDetailView: View {
                 EntryField(title: "Cel przejazdu", text: $purpose, hint: "Opcjonalnie")
                 EntryField(title: "Notatka", text: $note, hint: "Opcjonalnie")
                 Button("Zapisz zmiany") {
+                    if category != .business && linkedIncome != nil {
+                        error = "Ta trasa ma powiązany przychód. Najpierw usuń przychód w Historii wpisów, a potem zmień kategorię trasy."
+                        return
+                    }
                     trip.category = category; trip.purpose = purpose; trip.note = note
+                    if category == .privateTrip && trip.settlementState == .pending { trip.settlementState = .noIncome }
+                    if category == .business && trip.settlementState == .noIncome { trip.settlementState = .pending }
                     do { try context.save(); notice = "Zapisano trasę"; dismiss() }
                     catch { context.rollback(); self.error = error.localizedDescription }
+                }
+            }
+            Section("Rozliczenie") {
+                if trip.settlementState == .pending {
+                    NavigationLink { TripSettlementView(trip: trip) } label: {
+                        Label("Uzupełnij przychód", systemImage: "banknote.fill")
+                    }
+                } else if let linkedIncome {
+                    LabeledContent("Źródło", value: linkedIncome.platform)
+                    LabeledContent("Po prowizji", value: Formatters.money(linkedIncome.netAmount))
+                } else if trip.settlementState == .noIncome {
+                    Label("Przejazd bez przychodu", systemImage: "checkmark.circle")
+                        .foregroundStyle(.secondary)
+                } else {
+                    Text("Starsza trasa bez powiązanego rozliczenia.")
+                        .font(.footnote).foregroundStyle(.secondary)
                 }
             }
         }.navigationTitle("Szczegóły trasy").modifier(FormKeyboard())

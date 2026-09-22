@@ -8,6 +8,7 @@ struct RecordsView: View {
     @Query(sort: \Expense.date, order: .reverse) private var expenses: [Expense]
     @Query(sort: \WorkShift.startedAt, order: .reverse) private var shifts: [WorkShift]
     @Query private var vehicles: [Vehicle]
+    @Query private var trips: [Trip]
 
     @State private var pendingDelete: (() -> Void)?
     @State private var showDelete = false
@@ -22,7 +23,7 @@ struct RecordsView: View {
                 Section("Przychody") {
                     ForEach(incomes) { item in
                         NavigationLink { FinanceEditor(kind: .income, income: item) } label: { RecordRow(icon: "banknote.fill", color: .green, title: item.platform, subtitle: item.date.formatted(date: .abbreviated, time: .shortened), amount: item.netAmount) }
-                    }.onDelete { delete(incomes, at: $0) }
+                    }.onDelete { deleteIncomes(at: $0) }
                 }
             }
             if !fuel.isEmpty {
@@ -61,6 +62,20 @@ struct RecordsView: View {
         pendingDelete = {
             selected.forEach { context.delete($0) }
             do { try context.save() } catch { context.rollback(); self.error = error.localizedDescription }
+        }
+        showDelete = true
+    }
+
+    private func deleteIncomes(at offsets: IndexSet) {
+        let selected = offsets.map { incomes[$0] }
+        pendingDelete = {
+            let linkedTripIDs = Set(selected.compactMap(\.tripID))
+            trips.filter { linkedTripIDs.contains($0.id) }.forEach {
+                $0.settlementState = $0.category == .privateTrip ? .noIncome : .pending
+            }
+            selected.forEach { context.delete($0) }
+            do { try context.save() }
+            catch { context.rollback(); self.error = error.localizedDescription }
         }
         showDelete = true
     }

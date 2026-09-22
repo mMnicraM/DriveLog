@@ -30,6 +30,7 @@ struct VehiclesView: View {
             }
             Section("Dane") {
                 NavigationLink { RecordsView() } label: { Label("Historia wpisów", systemImage: "clock.arrow.circlepath") }
+                NavigationLink { PlatformSettingsView() } label: { Label("Platformy i prowizje", systemImage: "percent") }
                 NavigationLink {
                     Form {
                         Section("Przechowywanie") {
@@ -40,7 +41,7 @@ struct VehiclesView: View {
                     }.navigationTitle("Prywatność")
                 } label: { Label("Prywatność i dane", systemImage: "lock.shield") }
             }
-            Section { Text("DriveLog 0.5.5 • wersja testowa").font(.caption).foregroundStyle(.secondary) }
+            Section { Text("DriveLog 0.6.0 • wersja testowa").font(.caption).foregroundStyle(.secondary) }
         }.navigationTitle("Więcej")
             .toolbar { Button { showingAdd = true } label: { Image(systemName: "plus") } }
             .sheet(isPresented: $showingAdd) { NavigationStack { VehicleEditor() } }

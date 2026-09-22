@@ -14,6 +14,9 @@ struct ShiftSummaryView: View {
         expenses.filter { $0.shiftID == shift.id }.reduce(0) { $0 + $1.amount }
     }
     private var km: Double { trips.filter { $0.shiftID == shift.id }.reduce(0) { $0 + $1.distanceKM } }
+    private var pendingSettlements: Int {
+        trips.filter { $0.shiftID == shift.id && $0.settlementState == .pending }.count
+    }
     var body: some View {
         Form {
             Section("Czas pracy") {
@@ -27,6 +30,14 @@ struct ShiftSummaryView: View {
                 LabeledContent("Saldo", value: Formatters.money(income - costs))
                 LabeledContent("Dystans", value: Formatters.distance(km))
                 LabeledContent("Saldo / godzinę zmiany", value: shift.duration > 0 ? Formatters.money((income - costs) / (shift.duration / 3600)) : "—")
+            }
+            if pendingSettlements > 0 {
+                Section {
+                    Label("\(pendingSettlements) \(pendingSettlements == 1 ? "przejazd czeka" : "przejazdy czekają") na rozliczenie", systemImage: "exclamationmark.circle.fill")
+                        .foregroundStyle(.orange)
+                    Text("Saldo zmiany może być zaniżone, dopóki nie uzupełnisz tych przychodów.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                }
             }
             Section { Text("Uwzględniono wyłącznie wpisy powiązane ze zmianą. Starsze dane nie są przypisywane automatycznie. Nie jest to wynik podatkowy ani pełny koszt eksploatacji.").font(.footnote).foregroundStyle(.secondary) }
         }.navigationTitle("Podsumowanie zmiany")

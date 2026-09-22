@@ -3,6 +3,25 @@ import SwiftData
 @testable import DriveLog
 
 final class FormAndReportTests: XCTestCase {
+    func testTripSettlementCalculatesCommissionAndNet() {
+        XCTAssertEqual(TripSettlementCalculator.commission(fare: 100, percentage: 25), 25)
+        XCTAssertEqual(TripSettlementCalculator.net(fare: 100, tips: 10, percentage: 25), 85)
+        XCTAssertEqual(TripSettlementCalculator.commission(fare: 100, percentage: 120), 100)
+    }
+
+    func testPlatformCommissionSettingsAreClamped() throws {
+        let suiteName = "DriveLogTests.\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        PlatformCommissionStore.setPercentage(25, for: "Test", defaults: defaults)
+        XCTAssertEqual(PlatformCommissionStore.percentage(for: "Test", defaults: defaults), 25)
+        PlatformCommissionStore.setPercentage(120, for: "Test", defaults: defaults)
+        XCTAssertEqual(PlatformCommissionStore.percentage(for: "Test", defaults: defaults), 100)
+        PlatformCommissionStore.setPercentage(-5, for: "Test", defaults: defaults)
+        XCTAssertEqual(PlatformCommissionStore.percentage(for: "Test", defaults: defaults), 0)
+    }
+
     func testGPSRoutesDefaultToBusinessCategory() {
         XCTAssertEqual(TripCategory.gpsDefault, .business)
     }
@@ -117,5 +136,32 @@ final class FormAndReportTests: XCTestCase {
         XCTAssertEqual(saved.count, 1)
         XCTAssertEqual(saved.first?.shiftID, shift.id)
         XCTAssertEqual(saved.first?.vehicleID, shift.vehicleID)
+    }
+
+    @MainActor
+    func testSettlementLinksTripIncomeVehicleAndShift() throws {
+        let container = try ModelContainer(for: Trip.self, Income.self,
+            configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+        let context = container.mainContext
+        let vehicleID = UUID(), shiftID = UUID(), end = Date()
+        let trip = Trip(startedAt: end.addingTimeInterval(-600), endedAt: end,
+                        distanceMeters: 5_000, vehicleID: vehicleID, category: .business)
+        trip.shiftID = shiftID
+        trip.settlementState = .pending
+        let income = Income(date: trip.endedAt, amount: 100, platform: "Test",
+                            tips: 10, commission: 25, tripID: trip.id)
+        income.vehicleID = trip.vehicleID
+        income.shiftID = trip.shiftID
+        trip.settlementState = .settled
+        context.insert(trip); context.insert(income)
+        try context.save()
+
+        let saved = try XCTUnwrap(context.fetch(FetchDescriptor<Income>()).first)
+        XCTAssertEqual(saved.tripID, trip.id)
+        XCTAssertEqual(saved.vehicleID, vehicleID)
+        XCTAssertEqual(saved.shiftID, shiftID)
+        XCTAssertEqual(saved.date, end)
+        XCTAssertEqual(saved.netAmount, 85)
+        XCTAssertEqual(trip.settlementState, .settled)
     }
 }

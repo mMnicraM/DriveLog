@@ -11,6 +11,7 @@ struct DashboardView: View {
     @Query private var vehicles: [Vehicle]
     @Query(sort: \WorkShift.startedAt, order: .reverse) private var shifts: [WorkShift]
     @AppStorage("activeVehicleID") private var activeVehicleID = ""
+    @AppStorage("activeIncomePlatform") private var activePlatform = IncomePlatform.uber.rawValue
     @AppStorage("hasRecordingDraft") private var hasRecordingDraft = false
     @State private var period: ReportPeriod = .day
     @State private var filterActive = false
@@ -25,6 +26,7 @@ struct DashboardView: View {
             VStack(spacing: 16) {
                 header
                 activeVehicleCard
+                activePlatformCard
                 if hasRecordingDraft { recoveryBanner }
                 Picker("Okres", selection: $period) { ForEach(ReportPeriod.allCases) { Text($0.rawValue).tag($0) } }.pickerStyle(.segmented)
                 Toggle("Tylko aktywny samochód", isOn: $filterActive).font(.subheadline)
@@ -39,11 +41,12 @@ struct DashboardView: View {
                 }
                 shiftCard
                 NavigationLink { RecordingView() } label: { Label("Rozpocznij trasę", systemImage: "location.fill") }.buttonStyle(PrimaryButtonStyle())
+                if !pendingSettlementTrips.isEmpty { pendingSettlementBanner }
                 if unclassifiedCount > 0 { classificationBanner }
                 quickActions
                 Text("Saldo to przychody po prowizji minus zapisane wydatki. Nie uwzględnia podatków ani amortyzacji. Paliwo jest kosztem w dniu zakupu, a nie zużycia. Kilometry i czas dotyczą tras oznaczonych jako służbowe.")
                     .font(.footnote).foregroundStyle(.secondary)
-                Text("DriveLog 0.5.5").font(.caption2).foregroundStyle(.secondary).accessibilityIdentifier("dashboard.bottom")
+                Text("DriveLog 0.6.0").font(.caption2).foregroundStyle(.secondary).accessibilityIdentifier("dashboard.bottom")
             }.padding(.horizontal, 18).padding(.bottom, 96)
         }
         .scrollIndicators(.visible)
@@ -78,6 +81,38 @@ struct DashboardView: View {
     }
 
     private var activeShift: WorkShift? { shifts.first { $0.isActive } }
+
+    private var activePlatformCard: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "app.badge.fill")
+                .foregroundStyle(Brand.green)
+                .frame(width: 38, height: 38)
+                .background(Brand.green.opacity(0.1), in: RoundedRectangle(cornerRadius: 11))
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Aktywna platforma").font(.caption).foregroundStyle(.secondary)
+                Text(activePlatform).font(.headline)
+            }
+            Spacer()
+            Menu {
+                ForEach(IncomePlatform.allCases) { platform in
+                    Button {
+                        activePlatform = platform.rawValue
+                    } label: {
+                        if activePlatform == platform.rawValue {
+                            Label(platform.rawValue, systemImage: "checkmark")
+                        } else {
+                            Text(platform.rawValue)
+                        }
+                    }
+                }
+            } label: {
+                Label("Zmień", systemImage: "chevron.up.chevron.down")
+                    .font(.subheadline.weight(.semibold))
+            }
+        }
+        .padding(14)
+        .background(.background, in: RoundedRectangle(cornerRadius: 18))
+    }
 
     private var activeVehicleCard: some View {
         HStack(spacing: 12) {
@@ -143,6 +178,28 @@ struct DashboardView: View {
     }
 
     private var unclassifiedCount: Int { trips.filter { $0.category == .unclassified }.count }
+
+    private var pendingSettlementTrips: [Trip] {
+        trips.filter { $0.settlementState == .pending }
+    }
+
+    private var pendingSettlementBanner: some View {
+        NavigationLink { TripsView() } label: {
+            HStack(spacing: 13) {
+                Image(systemName: "banknote.fill").font(.title2).foregroundStyle(.orange)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Przejazdy do rozliczenia").font(.headline).foregroundStyle(.primary)
+                    Text("\(pendingSettlementTrips.count) \(pendingSettlementTrips.count == 1 ? "przejazd czeka" : "przejazdy czekają") na kwotę lub oznaczenie jako prywatne")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right").font(.caption.bold()).foregroundStyle(.tertiary)
+            }
+            .padding(15)
+            .background(.orange.opacity(0.1), in: RoundedRectangle(cornerRadius: 18))
+        }
+        .buttonStyle(.plain)
+    }
 
     private var classificationBanner: some View {
         NavigationLink { TripsView() } label: {

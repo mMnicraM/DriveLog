@@ -1,5 +1,23 @@
 # Historia zmian
 
+## 0.6.0 — szybkie rozliczenie przejazdu
+
+- Po bezpiecznym zapisie trasy otwiera się krótkie rozliczenie przychodu.
+- Data zakończenia, samochód, zmiana i trasa są przypisywane automatycznie.
+- Formularz zawiera źródło przychodu, kwotę kursu, napiwek, procent prowizji,
+  wyliczoną prowizję i kwotę pozostającą po prowizji.
+- Dodano trzy zakończenia: zapis przychodu, przejazd prywatny bez przychodu oraz
+  odłożenie rozliczenia na później.
+- Aktywną platformę można zmienić bezpośrednio na ekranie Start.
+- W Więcej → Platformy i prowizje można zapisać własną prowizję każdej firmy.
+- Nierozliczone przejazdy są oznaczone w historii i sygnalizowane na ekranie
+  Start oraz w podsumowaniu zmiany.
+- Usunięcie powiązanego przychodu ponownie oznacza trasę jako nierozliczoną;
+  usunięcie trasy zachowuje sam wpis finansowy bez nieaktualnego powiązania.
+- Nowe opcjonalne pola nie zmieniają znaczenia starszych rekordów.
+- Dodano testy obliczenia prowizji, ustawień prowizji i powiązania rozliczenia.
+- Podniesiono numer kompilacji do 13.
+
 ## 0.5.5 — GPS po wygaszeniu ekranu
 
 - Dodano `CLBackgroundActivitySession`, która utrzymuje sesję lokalizacji po
