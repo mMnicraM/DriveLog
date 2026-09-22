@@ -1,0 +1,581 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		070C4905F0CDEF620E747446 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C54154CFC714F4C02B87E6 /* Trip.swift */; };
+		0C40C398DA563B24D1001284 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD5CB46EF31F08F2042649EB /* Assets.xcassets */; };
+		349C5D74905688E72CD66211 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DC1CA58667EA699B52E322 /* RootView.swift */; };
+		3FE435B0AB53A3F0459ACD0D /* Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13C6FA460A65AEE24852F74 /* Formatting.swift */; };
+		4625A2B4CA8A06491A6334A2 /* ShiftSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFEFCABAA878225A7A8ECD7E /* ShiftSummaryView.swift */; };
+		4C7E146C91C7D93EB0F514DF /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBE4F7D4801ABD4B8657A9 /* OnboardingView.swift */; };
+		505ED271CDDA95B0A0BE541E /* BrandTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E1637A2F29692DCAFBC5E8 /* BrandTheme.swift */; };
+		51F3EFD4A304D01DAECBB84A /* ProfitabilityCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A2062241B6961012C4B6BC /* ProfitabilityCalculator.swift */; };
+		5BE842C52ECAA43E5DBCD25D /* FormAndReportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4189B72D74F26E52B469E6 /* FormAndReportTests.swift */; };
+		7C9FD8A7EB4A19562543DCAE /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FFCDAA0844F319F2A3C238F /* DashboardView.swift */; };
+		96088F9DA996DFD2D054CDC2 /* Vehicle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD819D5AC30C8C59B190B22 /* Vehicle.swift */; };
+		A0D1B5BB73974C0F50DA2077 /* FormFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44492D979E8CF86FDAA0D584 /* FormFields.swift */; };
+		A81CF173FABA19325416F3C9 /* WorkShift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A6D911C4D083FA60575129 /* WorkShift.swift */; };
+		AB97325C08F6E98F1E275FC6 /* RecordsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44304F6F58D4CA4C5EE73D75 /* RecordsView.swift */; };
+		BD13DBE05F7ACE00A51B473B /* ProfitabilityCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55349B4FA53B2E284518770 /* ProfitabilityCalculatorTests.swift */; };
+		BFB9AB5E45782AC7045E1211 /* DriveLogApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6169026A7090E6A1BA943750 /* DriveLogApp.swift */; };
+		C608A7E1D327576788C51123 /* FinanceModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715C8A24F2B3EED46162224F /* FinanceModels.swift */; };
+		DE740725834861B128FFF70D /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB64F110CB31444EE85499D /* LocationService.swift */; };
+		E0E08957407E79D2D6B40B3C /* TripsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E726B1E59D0F0937DEB1C57 /* TripsView.swift */; };
+		F72B814F4A37044F065C5651 /* AddEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2829277D6E89595BADB4089C /* AddEntryView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3FAC3FA9455DF10F35555464 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F903C3A156D02FDA7DF88BF6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D11145B750AFB32F7D5CDFD8;
+			remoteInfo = DriveLog;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0FFCDAA0844F319F2A3C238F /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		27A2062241B6961012C4B6BC /* ProfitabilityCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfitabilityCalculator.swift; sourceTree = "<group>"; };
+		2829277D6E89595BADB4089C /* AddEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEntryView.swift; sourceTree = "<group>"; };
+		2AD819D5AC30C8C59B190B22 /* Vehicle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vehicle.swift; sourceTree = "<group>"; };
+		2BCBE4F7D4801ABD4B8657A9 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		38C54154CFC714F4C02B87E6 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
+		44304F6F58D4CA4C5EE73D75 /* RecordsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordsView.swift; sourceTree = "<group>"; };
+		44492D979E8CF86FDAA0D584 /* FormFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormFields.swift; sourceTree = "<group>"; };
+		4E726B1E59D0F0937DEB1C57 /* TripsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripsView.swift; sourceTree = "<group>"; };
+		56A6D911C4D083FA60575129 /* WorkShift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkShift.swift; sourceTree = "<group>"; };
+		5D85C3294F9B40F2F98D8666 /* DriveLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DriveLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6169026A7090E6A1BA943750 /* DriveLogApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveLogApp.swift; sourceTree = "<group>"; };
+		715C8A24F2B3EED46162224F /* FinanceModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceModels.swift; sourceTree = "<group>"; };
+		73DC1CA58667EA699B52E322 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		8BB64F110CB31444EE85499D /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		B55349B4FA53B2E284518770 /* ProfitabilityCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfitabilityCalculatorTests.swift; sourceTree = "<group>"; };
+		D9E1637A2F29692DCAFBC5E8 /* BrandTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandTheme.swift; sourceTree = "<group>"; };
+		DD5CB46EF31F08F2042649EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E1784CA6D93BACC060A69970 /* DriveLogTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = DriveLogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED4189B72D74F26E52B469E6 /* FormAndReportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAndReportTests.swift; sourceTree = "<group>"; };
+		EFEFCABAA878225A7A8ECD7E /* ShiftSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftSummaryView.swift; sourceTree = "<group>"; };
+		F13C6FA460A65AEE24852F74 /* Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatting.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0242972540225D18FB95E673 /* SharedUI */ = {
+			isa = PBXGroup;
+			children = (
+				D9E1637A2F29692DCAFBC5E8 /* BrandTheme.swift */,
+				F13C6FA460A65AEE24852F74 /* Formatting.swift */,
+				44492D979E8CF86FDAA0D584 /* FormFields.swift */,
+			);
+			path = SharedUI;
+			sourceTree = "<group>";
+		};
+		0A58887B783C1286A4FB6265 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				218D95BCA3D70F089B683AF3 /* Dashboard */,
+				EF921D9AE7C9981EEE7569AE /* Entries */,
+				98A05C3C73C6A38C6935A398 /* Trips */,
+				825DDF09C2B5D7334E415A1F /* Vehicles */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		1F0ECB1AFCB2AE4DE4C556F9 /* DriveLogTests */ = {
+			isa = PBXGroup;
+			children = (
+				ED4189B72D74F26E52B469E6 /* FormAndReportTests.swift */,
+				B55349B4FA53B2E284518770 /* ProfitabilityCalculatorTests.swift */,
+			);
+			path = DriveLogTests;
+			sourceTree = "<group>";
+		};
+		218D95BCA3D70F089B683AF3 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				0FFCDAA0844F319F2A3C238F /* DashboardView.swift */,
+				EFEFCABAA878225A7A8ECD7E /* ShiftSummaryView.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		30D6637D82A2640F7BC89565 /* DriveLog */ = {
+			isa = PBXGroup;
+			children = (
+				EE7241BBBC86C54AB21C3075 /* Analytics */,
+				7ECA8E3C64740551012C369C /* App */,
+				0A58887B783C1286A4FB6265 /* Features */,
+				94837E7BBCEC3A28DDF8A74C /* Location */,
+				59B8B95B75EF670717755C0E /* Models */,
+				AD54AD670F0916587B8680F3 /* Resources */,
+				0242972540225D18FB95E673 /* SharedUI */,
+			);
+			path = DriveLog;
+			sourceTree = "<group>";
+		};
+		59B8B95B75EF670717755C0E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				715C8A24F2B3EED46162224F /* FinanceModels.swift */,
+				38C54154CFC714F4C02B87E6 /* Trip.swift */,
+				2AD819D5AC30C8C59B190B22 /* Vehicle.swift */,
+				56A6D911C4D083FA60575129 /* WorkShift.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		7ECA8E3C64740551012C369C /* App */ = {
+			isa = PBXGroup;
+			children = (
+				6169026A7090E6A1BA943750 /* DriveLogApp.swift */,
+				73DC1CA58667EA699B52E322 /* RootView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		825DDF09C2B5D7334E415A1F /* Vehicles */ = {
+			isa = PBXGroup;
+			children = (
+				2BCBE4F7D4801ABD4B8657A9 /* OnboardingView.swift */,
+			);
+			path = Vehicles;
+			sourceTree = "<group>";
+		};
+		91EE12F48DA7176F410EF4A0 = {
+			isa = PBXGroup;
+			children = (
+				30D6637D82A2640F7BC89565 /* DriveLog */,
+				1F0ECB1AFCB2AE4DE4C556F9 /* DriveLogTests */,
+				D8CA8491730567C9111154E8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		94837E7BBCEC3A28DDF8A74C /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				8BB64F110CB31444EE85499D /* LocationService.swift */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
+		98A05C3C73C6A38C6935A398 /* Trips */ = {
+			isa = PBXGroup;
+			children = (
+				4E726B1E59D0F0937DEB1C57 /* TripsView.swift */,
+			);
+			path = Trips;
+			sourceTree = "<group>";
+		};
+		AD54AD670F0916587B8680F3 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DD5CB46EF31F08F2042649EB /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D8CA8491730567C9111154E8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5D85C3294F9B40F2F98D8666 /* DriveLog.app */,
+				E1784CA6D93BACC060A69970 /* DriveLogTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EE7241BBBC86C54AB21C3075 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				27A2062241B6961012C4B6BC /* ProfitabilityCalculator.swift */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
+		EF921D9AE7C9981EEE7569AE /* Entries */ = {
+			isa = PBXGroup;
+			children = (
+				2829277D6E89595BADB4089C /* AddEntryView.swift */,
+				44304F6F58D4CA4C5EE73D75 /* RecordsView.swift */,
+			);
+			path = Entries;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A027E5706CA8A4AF22E0E9F1 /* DriveLogTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 27D4F4E90EEAE5DFFDF35D75 /* Build configuration list for PBXNativeTarget "DriveLogTests" */;
+			buildPhases = (
+				C81E80B58DAD6FE8C2953DE3 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				10251508EC881219C9A0EA71 /* PBXTargetDependency */,
+			);
+			name = DriveLogTests;
+			packageProductDependencies = (
+			);
+			productName = DriveLogTests;
+			productReference = E1784CA6D93BACC060A69970 /* DriveLogTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D11145B750AFB32F7D5CDFD8 /* DriveLog */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6537C9B4AE4F68865B0DCB5C /* Build configuration list for PBXNativeTarget "DriveLog" */;
+			buildPhases = (
+				DA849C2F4DF8055E7D1B8FA1 /* Sources */,
+				1DD65A46D89A44D54AAEA87E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DriveLog;
+			packageProductDependencies = (
+			);
+			productName = DriveLog;
+			productReference = 5D85C3294F9B40F2F98D8666 /* DriveLog.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F903C3A156D02FDA7DF88BF6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					A027E5706CA8A4AF22E0E9F1 = {
+						DevelopmentTeam = "";
+					};
+					D11145B750AFB32F7D5CDFD8 = {
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = "[\"com.apple.BackgroundModes\": [\"enabled\": 1]]";
+					};
+				};
+			};
+			buildConfigurationList = 21C700EA5766919A150D1971 /* Build configuration list for PBXProject "DriveLog" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 91EE12F48DA7176F410EF4A0;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = D8CA8491730567C9111154E8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D11145B750AFB32F7D5CDFD8 /* DriveLog */,
+				A027E5706CA8A4AF22E0E9F1 /* DriveLogTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1DD65A46D89A44D54AAEA87E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0C40C398DA563B24D1001284 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C81E80B58DAD6FE8C2953DE3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5BE842C52ECAA43E5DBCD25D /* FormAndReportTests.swift in Sources */,
+				BD13DBE05F7ACE00A51B473B /* ProfitabilityCalculatorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA849C2F4DF8055E7D1B8FA1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F72B814F4A37044F065C5651 /* AddEntryView.swift in Sources */,
+				505ED271CDDA95B0A0BE541E /* BrandTheme.swift in Sources */,
+				7C9FD8A7EB4A19562543DCAE /* DashboardView.swift in Sources */,
+				BFB9AB5E45782AC7045E1211 /* DriveLogApp.swift in Sources */,
+				C608A7E1D327576788C51123 /* FinanceModels.swift in Sources */,
+				A0D1B5BB73974C0F50DA2077 /* FormFields.swift in Sources */,
+				3FE435B0AB53A3F0459ACD0D /* Formatting.swift in Sources */,
+				DE740725834861B128FFF70D /* LocationService.swift in Sources */,
+				4C7E146C91C7D93EB0F514DF /* OnboardingView.swift in Sources */,
+				51F3EFD4A304D01DAECBB84A /* ProfitabilityCalculator.swift in Sources */,
+				AB97325C08F6E98F1E275FC6 /* RecordsView.swift in Sources */,
+				349C5D74905688E72CD66211 /* RootView.swift in Sources */,
+				4625A2B4CA8A06491A6334A2 /* ShiftSummaryView.swift in Sources */,
+				070C4905F0CDEF620E747446 /* Trip.swift in Sources */,
+				E0E08957407E79D2D6B40B3C /* TripsView.swift in Sources */,
+				96088F9DA996DFD2D054CDC2 /* Vehicle.swift in Sources */,
+				A81CF173FABA19325416F3C9 /* WorkShift.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		10251508EC881219C9A0EA71 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D11145B750AFB32F7D5CDFD8 /* DriveLog */;
+			targetProxy = 3FAC3FA9455DF10F35555464 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		02A0CEED1A839B628551CC49 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = pl.drivelog.DriveLogTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DriveLog.app/DriveLog";
+			};
+			name = Release;
+		};
+		3FE2E76B4243E10DC2C60B0B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 10;
+				DEVELOPMENT_TEAM = KF8ZHP58T7;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = DriveLog;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "DriveLog może rejestrować rozpoczętą trasę również po wygaszeniu ekranu.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "DriveLog używa lokalizacji do zapisu trasy, dystansu i czasu przejazdu.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIBackgroundModes = location;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.5.3;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.drivelog.app;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		4638959265F3BD2602D1FF52 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = pl.drivelog.DriveLogTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DriveLog.app/DriveLog";
+			};
+			name = Debug;
+		};
+		69079101ACA90A658ED66C70 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 10;
+				DEVELOPMENT_TEAM = KF8ZHP58T7;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = DriveLog;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "DriveLog może rejestrować rozpoczętą trasę również po wygaszeniu ekranu.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "DriveLog używa lokalizacji do zapisu trasy, dystansu i czasu przejazdu.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIBackgroundModes = location;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.5.3;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.drivelog.app;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BF72DC39B87990FD15ED7651 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		EF8260592CFF71FB32A97D55 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		21C700EA5766919A150D1971 /* Build configuration list for PBXProject "DriveLog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF72DC39B87990FD15ED7651 /* Debug */,
+				EF8260592CFF71FB32A97D55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		27D4F4E90EEAE5DFFDF35D75 /* Build configuration list for PBXNativeTarget "DriveLogTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4638959265F3BD2602D1FF52 /* Debug */,
+				02A0CEED1A839B628551CC49 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6537C9B4AE4F68865B0DCB5C /* Build configuration list for PBXNativeTarget "DriveLog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				69079101ACA90A658ED66C70 /* Debug */,
+				3FE2E76B4243E10DC2C60B0B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F903C3A156D02FDA7DF88BF6 /* Project object */;
+}
