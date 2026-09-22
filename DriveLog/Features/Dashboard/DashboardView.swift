@@ -43,7 +43,7 @@ struct DashboardView: View {
                 quickActions
                 Text("Saldo to przychody po prowizji minus zapisane wydatki. Nie uwzględnia podatków ani amortyzacji. Paliwo jest kosztem w dniu zakupu, a nie zużycia. Kilometry i czas dotyczą tras oznaczonych jako służbowe.")
                     .font(.footnote).foregroundStyle(.secondary)
-                Text("DriveLog 0.5.3").font(.caption2).foregroundStyle(.secondary).accessibilityIdentifier("dashboard.bottom")
+                Text("DriveLog 0.5.4").font(.caption2).foregroundStyle(.secondary).accessibilityIdentifier("dashboard.bottom")
             }.padding(.horizontal, 18).padding(.bottom, 96)
         }
         .scrollIndicators(.visible)
@@ -113,10 +113,19 @@ struct DashboardView: View {
                 }
                 Spacer(); Image(systemName: activeShift == nil ? "timer" : "timer.circle.fill").font(.title).foregroundStyle(activeShift == nil ? Color.secondary : Brand.green)
             }
-            Button(activeShift == nil ? "Rozpocznij zmianę" : "Zakończ zmianę") { toggleShift() }
-                .font(.headline).frame(maxWidth: .infinity).padding(.vertical, 12)
-                .background(activeShift == nil ? Brand.green.opacity(0.12) : Color.red.opacity(0.12), in: RoundedRectangle(cornerRadius: 13))
-                .foregroundStyle(activeShift == nil ? Brand.green : .red)
+            Button(action: toggleShift) {
+                Text(activeShift == nil ? "Rozpocznij zmianę" : "Zakończ zmianę")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(
+                        activeShift == nil ? Brand.green.opacity(0.12) : Color.red.opacity(0.12),
+                        in: RoundedRectangle(cornerRadius: 13)
+                    )
+                    .foregroundStyle(activeShift == nil ? Brand.green : .red)
+                    .contentShape(Rectangle())
+            }
+                .buttonStyle(.plain)
                 .disabled(activeVehicle == nil)
         }.padding(16).background(.background, in: RoundedRectangle(cornerRadius: 20))
     }

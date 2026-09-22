@@ -14,14 +14,20 @@ enum Brand {
 }
 
 struct PrimaryButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) private var isEnabled
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.headline)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
-            .background(Brand.green.opacity(configuration.isPressed ? 0.72 : 1), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .background(
+                Brand.green.opacity(isEnabled ? (configuration.isPressed ? 0.72 : 1) : 0.35),
+                in: RoundedRectangle(cornerRadius: 16, style: .continuous)
+            )
             .foregroundStyle(.white)
             .scaleEffect(configuration.isPressed ? 0.98 : 1)
+            .contentShape(Rectangle())
     }
 }
 

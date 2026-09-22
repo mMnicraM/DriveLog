@@ -18,6 +18,21 @@ enum LocationConfiguration {
     }
 }
 
+enum LocationAuthorizationAction: Equatable {
+    case start
+    case requestPermission
+    case openSettings
+
+    static func resolve(_ status: CLAuthorizationStatus) -> Self {
+        switch status {
+        case .authorizedAlways, .authorizedWhenInUse: .start
+        case .notDetermined: .requestPermission
+        case .denied, .restricted: .openSettings
+        @unknown default: .openSettings
+        }
+    }
+}
+
 private enum RecordingDraftStore {
     private enum StoreError: LocalizedError {
         case applicationSupportUnavailable
@@ -80,6 +95,10 @@ private enum RecordingDraftStore {
     }
 
     func requestPermission() { manager.requestWhenInUseAuthorization() }
+
+    func refreshAuthorizationStatus() {
+        authorizationStatus = manager.authorizationStatus
+    }
 
     func start(vehicleID: UUID, shiftID: UUID?) {
         guard !isRecording, CLLocationManager.locationServicesEnabled(),

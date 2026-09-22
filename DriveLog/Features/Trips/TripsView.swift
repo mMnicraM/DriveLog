@@ -29,6 +29,8 @@ struct TripsView: View {
 struct RecordingView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
+    @Environment(\.scenePhase) private var scenePhase
     @Query private var vehicles: [Vehicle]
     @Query private var shifts: [WorkShift]
     @StateObject private var location = LocationService()
@@ -37,6 +39,8 @@ struct RecordingView: View {
     @State private var pending: RecordingSnapshot?
     @State private var error = ""
     @State private var showRecovery = false
+    @State private var showLocationSettings = false
+    @State private var startAfterPermission = false
     @AppStorage("activeVehicleID") private var activeVehicleID = ""
     @AppStorage("saveNotice") private var notice = ""
 
@@ -63,22 +67,21 @@ struct RecordingView: View {
                     }
                 }
                 if !authorized {
-                    Text("Do rejestracji potrzebny jest dostęp do lokalizacji. Jeśli odmówiono zgody, włącz ją w Ustawieniach iPhone’a dla DriveLog.")
+                    Text(location.authorizationStatus == .notDetermined
+                         ? "Po dotknięciu przycisku iPhone poprosi o dostęp do lokalizacji, a trasa rozpocznie się automatycznie."
+                         : "Dostęp do lokalizacji jest wyłączony. Otwórz ustawienia DriveLog i wybierz „Gdy używam aplikacji” lub „Zawsze”.")
                         .font(.callout).foregroundStyle(.secondary)
-                    if location.authorizationStatus == .notDetermined {
-                        Button("Zezwól na lokalizację") { location.requestPermission() }
-                    }
                 }
                 if authorized && !location.backgroundTrackingAvailable {
                     Label("GPS działa teraz tylko przy otwartej aplikacji. Tryb pracy w tle nie został rozpoznany przez iOS.", systemImage: "exclamationmark.triangle.fill")
                         .font(.footnote)
                         .foregroundStyle(.orange)
                 }
-                Button(pending != nil ? "Zapisz odzyskaną trasę" : location.isRecording ? "Zakończ i zapisz trasę" : "Rozpocznij trasę") {
+                Button(primaryActionTitle) {
                     toggle()
                 }
                 .buttonStyle(PrimaryButtonStyle())
-                .disabled(pending == nil && !location.isRecording && (!authorized || vehicleID == nil))
+                .disabled(pending == nil && !location.isRecording && vehicleID == nil)
                 Text("Trasa jest zapisywana roboczo na urządzeniu. Po przerwaniu aplikacja pozwoli ją kontynuować, zapisać lub odrzucić. Dokładność i działanie w tle sprawdź na prawdziwym iPhonie.")
                     .font(.footnote).foregroundStyle(.secondary)
             }.padding()
@@ -89,6 +92,22 @@ struct RecordingView: View {
         .onAppear(perform: prepare)
         .onChange(of: location.persistenceError) { _, value in
             if let value { error = "Nie udało się zapisać kopii roboczej: \(value)" }
+        }
+        .onChange(of: location.authorizationStatus) { _, status in
+            guard startAfterPermission else { return }
+            switch LocationAuthorizationAction.resolve(status) {
+            case .start:
+                startAfterPermission = false
+                beginRecording()
+            case .openSettings:
+                startAfterPermission = false
+                showLocationSettings = true
+            case .requestPermission:
+                break
+            }
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active { location.refreshAuthorizationStatus() }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)) { _ in
             location.flushDraft()
@@ -112,9 +131,29 @@ struct RecordingView: View {
             get: { !error.isEmpty },
             set: { if !$0 { error = "" } }
         )) { Button("OK") {} } message: { Text(error) }
+        .alert("Włącz lokalizację dla DriveLog", isPresented: $showLocationSettings) {
+            Button("Otwórz Ustawienia") {
+                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                openURL(url)
+            }
+            Button("Anuluj", role: .cancel) {}
+        } message: {
+            Text("Bez dostępu do lokalizacji DriveLog nie może rozpocząć zapisu trasy.")
+        }
+    }
+
+    private var primaryActionTitle: String {
+        if pending != nil { return "Zapisz odzyskaną trasę" }
+        if location.isRecording { return "Zakończ i zapisz trasę" }
+        switch LocationAuthorizationAction.resolve(location.authorizationStatus) {
+        case .start: return "Rozpocznij trasę"
+        case .requestPermission: return "Zezwól i rozpocznij trasę"
+        case .openSettings: return "Włącz lokalizację w Ustawieniach"
+        }
     }
 
     private func prepare() {
+        location.refreshAuthorizationStatus()
         if let draft = location.recoverableDraft {
             vehicleID = draft.vehicleID
             shiftID = draft.shiftID
@@ -126,7 +165,6 @@ struct RecordingView: View {
         } else if vehicleID == nil {
             vehicleID = vehicles.first { $0.id.uuidString == activeVehicleID }?.id ?? vehicles.first?.id
         }
-        if location.authorizationStatus == .notDetermined { location.requestPermission() }
     }
 
     private func toggle() {
@@ -152,12 +190,28 @@ struct RecordingView: View {
                 context.rollback()
                 self.error = error.localizedDescription
             }
-        } else if let vehicleID {
-            shiftID = shifts.first { $0.isActive && $0.vehicleID == vehicleID }?.id
-            location.start(vehicleID: vehicleID, shiftID: shiftID)
-            if !location.isRecording {
-                error = "Nie można rozpocząć. Sprawdź, czy usługi lokalizacji są włączone."
+        } else {
+            switch LocationAuthorizationAction.resolve(location.authorizationStatus) {
+            case .start:
+                beginRecording()
+            case .requestPermission:
+                startAfterPermission = true
+                location.requestPermission()
+            case .openSettings:
+                showLocationSettings = true
             }
+        }
+    }
+
+    private func beginRecording() {
+        guard let vehicleID else {
+            error = "Wybierz pojazd przed rozpoczęciem trasy."
+            return
+        }
+        shiftID = shifts.first { $0.isActive && $0.vehicleID == vehicleID }?.id
+        location.start(vehicleID: vehicleID, shiftID: shiftID)
+        if !location.isRecording {
+            error = "Nie można rozpocząć. Sprawdź, czy usługi lokalizacji są włączone."
         }
     }
 }

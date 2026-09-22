@@ -1,4 +1,4 @@
-# DriveLog 0.5.3 — odbiór na Macu
+# DriveLog 0.5.4 — odbiór na Macu
 
 ## Status
 
@@ -23,14 +23,15 @@ Zmiana przewijania jest kandydatem do poprawki, a nie potwierdzoną naprawą.
 1. W katalogu zawierającym project.yml wykonaj: `xcodegen generate`.
 2. Otwórz DriveLog.xcodeproj i wybierz schemat DriveLog oraz symulator iPhone.
 3. Uruchom Product → Build, następnie Product → Test (⌘U).
-4. W zestawie jest łącznie 10 testów: obliczenia, liczby, granice okresów,
-   filtrowanie aut, klasyfikacja tras, pusty wynik, zapis powiązania i kopia GPS.
+4. W zestawie jest łącznie 11 testów: obliczenia, liczby, granice okresów,
+   filtrowanie aut, klasyfikacja tras, pusty wynik, zapis powiązania, kopia GPS
+   i reakcje na każdy stan zgody lokalizacji.
 5. Uruchom aplikację przez ⌘R. Sprawdź poniższą listę również na iPhonie.
 
 ## Scenariusze ręczne — wymagane przed uznaniem wersji za gotową
 
 - Start: przeciągnij ekran w górę od karty salda i od pustego miejsca.
-  Dotrzyj do stopki „DriveLog 0.5.3”, wróć na górę, otwórz każdą szybką akcję.
+  Dotrzyj do stopki „DriveLog 0.5.4”, wróć na górę, otwórz każdą szybką akcję.
   Powtórz z małym ekranem i dużym tekstem systemowym. Identyfikatory do
   przyszłych UI tests: dashboard.scroll i dashboard.bottom.
 - Formularze: etykiety mają pozostać widoczne po wpisaniu danych.
@@ -46,6 +47,8 @@ Zmiana przewijania jest kandydatem do poprawki, a nie potwierdzoną naprawą.
 - Usuwanie: przesuń wpis lub trasę, anuluj, potem potwierdź usunięcie.
 - Zmiana: rozpocznij, dodaj przychód i koszt przypisane do zmiany, zakończ.
   Porównaj podsumowanie i historię. Zmiana aktywna powinna pozostać po restarcie.
+  Dotknij też pustego miejsca po lewej i prawej stronie napisu na przycisku —
+  cały kolorowy prostokąt ma rozpoczynać lub kończyć zmianę.
 - Filtry: dzień/tydzień/miesiąc/rok i dwa auta. Stary przychód bez auta jest
   widoczny w „Wszystkie pojazdy”, a nie w wynikach pojedynczego auta.
   Wykresy mają jawnie oznaczony niezależny zakres „Ostatnie 7 dni”.
@@ -53,6 +56,9 @@ Zmiana przewijania jest kandydatem do poprawki, a nie potwierdzoną naprawą.
   zapis i mapa. Wymuś zamknięcie podczas testowej trasy, uruchom ponownie
   i sprawdź kolejno: kontynuowanie, zapis odzyskanej trasy oraz odrzucenie.
   Po zapisie sklasyfikuj trasę. Nie testuj telefonu jako kierowca.
+- GPS i zgody: przy pierwszym użyciu wybierz zgodę i sprawdź, że rejestracja
+  zaczyna się bez drugiego kliknięcia. Po odmowie przycisk ma prowadzić do
+  Ustawień, a po powrocie prawidłowo rozpoznać nową zgodę.
 - Po instalacji sprawdź, czy ekran GPS nie pokazuje pomarańczowego ostrzeżenia
   o pracy tylko w pierwszym planie. Jeśli je pokazuje, trasa nie powinna
   zamknąć aplikacji, ale test z wygaszonym ekranem nie jest jeszcze zaliczony.

@@ -1,5 +1,18 @@
 # Historia zmian
 
+## 0.5.4 — przyciski zmiany i GPS
+
+- Cała widoczna powierzchnia przycisku rozpoczęcia/zakończenia zmiany reaguje
+  na dotyk, a nie tylko sam napis.
+- Przycisk trasy nie jest już pozornie aktywny, gdy brakuje zgody GPS.
+- Pierwsze dotknięcie może poprosić o zgodę i automatycznie rozpocząć trasę.
+- Po wcześniejszym odrzuceniu zgody aplikacja wyjaśnia problem i prowadzi
+  bezpośrednio do ustawień DriveLog.
+- Stan zgody jest odświeżany po powrocie z Ustawień iPhone’a.
+- Dodano wizualny stan wyłączony wspólnego zielonego przycisku oraz test decyzji
+  dla wszystkich stanów autoryzacji lokalizacji.
+- Podniesiono numer kompilacji do 11.
+
 ## 0.5.3 — awaria GPS i ikona
 
 - Usunięto przyczynę zamykania aplikacji przy rozpoczynaniu trasy: praca GPS

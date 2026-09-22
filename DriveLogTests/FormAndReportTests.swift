@@ -3,6 +3,14 @@ import SwiftData
 @testable import DriveLog
 
 final class FormAndReportTests: XCTestCase {
+    func testLocationAuthorizationProducesVisibleAction() {
+        XCTAssertEqual(LocationAuthorizationAction.resolve(.authorizedWhenInUse), .start)
+        XCTAssertEqual(LocationAuthorizationAction.resolve(.authorizedAlways), .start)
+        XCTAssertEqual(LocationAuthorizationAction.resolve(.notDetermined), .requestPermission)
+        XCTAssertEqual(LocationAuthorizationAction.resolve(.denied), .openSettings)
+        XCTAssertEqual(LocationAuthorizationAction.resolve(.restricted), .openSettings)
+    }
+
     func testBackgroundLocationRequiresArrayCapability() {
         XCTAssertTrue(LocationConfiguration.supportsBackgroundLocation(
             infoDictionary: ["UIBackgroundModes": ["audio", "location"]]
